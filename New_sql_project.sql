@@ -169,5 +169,62 @@ Create Table Transactions (
    case when Balance>25000 then "Premium Account"
         when Balance>15000 then "Standard Account"
         else "Basic Account"
-        end
-       
+        end as new_column from accounts;
+ use bankingdb;       
+select * from customers;
+
+#windows functions 1 rank without partition 
+select AccountId, Balance, rank() over (order by Balance desc) from accounts;
+select AccountId, Balance, dense_rank() over (order by balance desc) from accounts;
+update Accounts set  Balance= 70000 where AccountID=104;
+
+# 2rank with partition
+select AccountID, Balance, AccountType, rank() over (partition by AccountType order by Balance desc) typewise_ranking from accounts;
+select AccountID, Balance, AccountType, dense_rank() over (partition by AccountType order by Balance desc) typewise_ranking from accounts;
+select AccountID, Balance, AccountType, percent_rank() over (partition by AccountType order by Balance desc) typewise_ranking from accounts;
+
+# lead and lag without partition
+select AccountId, Balance, lead(Balance) over (order by  Balance Desc) as lead_balance from accounts;
+select AccountId, Balance, lag(Balance) over (order by  Balance Desc) as lead_balance from accounts;
+
+select AccountID, AccountType, Balance from accounts where AccountType= "Savings" or 
+AccountType= "Current";
+select * from Accounts;
+select AccountID, AccountType, Balance from accounts where AccountType 
+in ("Savings", "Current");
+
+
+
+
+select LoanID, LoanAmount, rank() over (order by LoanAmount desc) from Loans;
+select LoanID, LoanAmount, dense_rank() over (order by LoanAmount desc) from Loans;
+#with partition Loans table Windows function
+select LoanId, LoanAmount, InterestRate, rank() over (order by LoanAmount desc)
+as type_wise_ranking from Loans;
+select LoanId, LoanAmount, InterestRate, dense_rank() over (order by LoanAmount desc)
+as type_wise_ranking from Loans;
+select LoanId, LoanAmount, InterestRate, percent_rank() over (order by LoanAmount desc)
+as type_wise_ranking from Loans;
+select LoanID, LoanAmount, lead(LoanAmount) over (order by LoanAmount desc) as lead_LoanAmount from Loans;
+select LoanID, LoanAmount, lag(LoanAmount) over (order by LoanAmount desc) as lead_LoanAmount from Loans;
+
+#having Clause
+select min(Balance), AccountType from accounts group by AccountType;
+select min(Balance), AccountType from accounts group by AccountType order by min(Balance);
+
+select min(Balance), AccountType from Accounts group by AccountType
+having (min(Balance)>9000) order by min(Balance);
+select AccountType from accounts group by AccountType;
+select distinct AccountType from accounts;
+
+select now();
+select current_date();
+select sysdate();
+
+select * from Transactions;
+insert into Transactions( TransactionID, TransactionDate, Amount, TransactionType)
+values( 1, "2024-08-03",1000000.20,"Cash");
+insert into Transactions( TransactionID, TransactionDate, Amount, TransactionType)
+values( 2, "2024-12-18",13000000.32,"UPI"), (3, "2022-05-02",2500000.56, "Card"),
+(4 , "2023-01-13",2660000.67, "Cash"), (5, "2022-04-17", 50000000.82, "Card"),
+(6, "2020-03-12", 7800000, "UPI");
