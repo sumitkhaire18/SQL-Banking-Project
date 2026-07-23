@@ -220,6 +220,8 @@ select distinct AccountType from accounts;
 select now();
 select current_date();
 select sysdate();
+select current_timestamp();
+
 
 select * from Transactions;
 insert into Transactions( TransactionID, TransactionDate, Amount, TransactionType)
@@ -228,3 +230,51 @@ insert into Transactions( TransactionID, TransactionDate, Amount, TransactionTyp
 values( 2, "2024-12-18",13000000.32,"UPI"), (3, "2022-05-02",2500000.56, "Card"),
 (4 , "2023-01-13",2660000.67, "Cash"), (5, "2022-04-17", 50000000.82, "Card"),
 (6, "2020-03-12", 7800000, "UPI");
+
+select * from customers;
+select year(accountcreation_date) as year_of_creation from customers;
+select month (accountcreation_date) as month_of_creation from customers;
+select day (accountcreation_date) as day_of_creation from customers;
+select now();
+select hour(now()), minute(now()),second(now());
+select current_date();
+select sysdate();
+select current_timestamp();
+select datediff(now(),accountcreation_date) as total_days
+from customers;
+select datediff(now(), accountcreation_date) as total_days
+from customers order by total_days limit 1;
+select * from loans;
+select datediff(EndDate, StartDate) as duration_loan from loans;
+select date_add(now(),interval 6 month);
+select date_add(now(), interval 6 day);
+select customerid,date_add(accountcreation_Date, interval 6 month)
+as lockinperiod from customers;
+select greatest("2026-07-16", "2026-08-16", "2025-08-17") as the_greatest_value 
+from customers;
+select greatest(450,390,250,200) from accounts limit 1;
+select least(450,390,250,200) from accounts limit 1;
+select greatest( StartDate, EndDate) from Loans;
+
+#StringFunction
+select upper(firstname),lower(lastname),
+concat(firstname," ",lastname) as full_name from customers;
+select length(firstname), (lastname) from customers;
+select left((firstname), (lastname)) from customers;
+select left (firstname,2), right(firstname,2) from customers;
+
+#MathFunction
+select 3+5,3-5,3*2,3/3,6%4;
+select* from accounts;
+update accounts set Balance= Balance-2000 where AccountID=101;
+select round(270.34,1), floor(234.98), ceil(250.41);
+select truncate(236.53,0);
+select round(23.56,1), TRUNCATE(23.556,2);
+select abs(-235), abs(235);
+select mod(24,7), 24%7;
+select power(5,4);
+select power(2,3);
+select exp(2);
+
+
+
